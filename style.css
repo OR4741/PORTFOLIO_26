@@ -467,7 +467,7 @@ img {
     font-size: 1.4rem;
     line-height: 1.5;
     max-width: 900px;
-    color: var(--text-color);
+    color: var(--dark-grey);
 }
 
 .poster-mockup:hover .poster-overlay {
@@ -511,7 +511,7 @@ img {
 
 .text-bold { font-weight: 700; font-size: 1.2rem; }
 .text-bold2 { font-weight: 700; font-size: 1.2rem; }
-.text-bold3 { font-weight: 700; font-size: 1.4rem; color: #485139; }
+.text-bold3 { font-weight: 700; font-size: 1.4rem; color: #272a23; }
 
 #back-to-top {
     position: fixed;
@@ -613,7 +613,7 @@ img {
     .nav-links { gap: 15px; }
     
     .about-container { flex-direction: column; }
-    .intro-text { font-size: 1.1rem; line-height: 1.4; }
+    .intro-text { font-size: 1.1rem; line-height: 1.3; }
     .text-bold2 { font-size: 1.1rem; font-weight: 700; }
     
     .detail-group h3, .detail-group p { font-size: 1.1rem; }
