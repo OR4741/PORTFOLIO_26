@@ -614,8 +614,8 @@ img {
     
     .about-container { flex-direction: column; }
     .profile-overlay { padding: 10px;}
-    .intro-text { font-size: 1.2rem; line-height: 1.4; }
-    .text-bold2 { font-size: 1.2rem; font-weight: 700; }
+    .intro-text { font-size: 1.1rem; line-height: 1.4; }
+    .text-bold2 { font-size: 1.1rem; font-weight: 700; }
     
     .detail-group h3, .detail-group p { font-size: 1.1rem; }
     
