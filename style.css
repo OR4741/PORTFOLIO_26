@@ -630,9 +630,9 @@ img {
     
     .banner-list { gap: 20px; margin-bottom: 40px; }
     .banner-item, .poster-mockup { width: 100%; }
-    .poster-overlay { padding: 10px; }
-    .poster-overlay p { font-size: 1.1rem; line-height: 1.3;}
-    .text-bold3 { font-size: 1.1rem; }
+    .poster-overlay { padding: 0px; }
+    .poster-overlay p { font-size: 1rem; line-height: 1.4;}
+    .text-bold3 { font-size: 1rem; }
     .poster-mockup-container { margin-top: 30px; }
     
     .detail-pages-grid { grid-template-columns: 1fr; gap: 20px; }
