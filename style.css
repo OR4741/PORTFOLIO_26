@@ -228,12 +228,11 @@ img {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.9);
     display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 30px;
     opacity: 0;
     transition: opacity 0.5s ease;
     text-align: left;
+    overflow-y: auto;
 }
 
 .intro-text {
@@ -242,6 +241,7 @@ img {
     color: var(--dark-grey);
     text-align: center;
     white-space: pre-line;
+    margin: auto;
 }
 
 .profile-image-container:hover .profile-img {
@@ -454,13 +454,12 @@ img {
     color: var(--black);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
     padding: 40px;
     text-align: center;
     white-space: pre-line;
+    overflow-y: auto;
 }
 
 .poster-overlay p {
@@ -468,6 +467,7 @@ img {
     line-height: 1.5;
     max-width: 900px;
     color: var(--dark-grey);
+    margin: auto;
 }
 
 .poster-mockup:hover .poster-overlay {
@@ -630,9 +630,9 @@ img {
     
     .banner-list { gap: 20px; margin-bottom: 40px; }
     .banner-item, .poster-mockup { width: 100%; }
-    .poster-overlay { padding: 0px; }
-    .poster-overlay p { font-size: 1rem; line-height: 1.4;}
-    .text-bold3 { font-size: 1rem; }
+    .poster-overlay { padding: 20px; }
+    .poster-overlay p { font-size: 1.2rem; line-height: 1.5;}
+    .text-bold3 { font-size: 1.2rem; }
     .poster-mockup-container { margin-top: 30px; }
     
     .detail-pages-grid { grid-template-columns: 1fr; gap: 20px; }
