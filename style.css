@@ -510,7 +510,7 @@ img {
 /* 5. Utilities & Animations */
 
 .text-bold { font-weight: 700; font-size: 1.2rem; }
-.text-bold2 { font-weight: 700; font-size: 1.2rem; }
+.text-bold2 { font-weight: 700; font-size: 1.2rem; color: #272a23; }
 .text-bold3 { font-weight: 700; font-size: 1.4rem; color: #272a23; }
 
 #back-to-top {
