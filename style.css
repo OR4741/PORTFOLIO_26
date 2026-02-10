@@ -121,11 +121,11 @@ img {
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 40px;
 }
 
 .nav-links a {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 500;
     color: var(--muted-text);
     position: relative;
