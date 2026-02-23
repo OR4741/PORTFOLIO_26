@@ -280,7 +280,7 @@ img {
 }
 
 .contents-list {
-    font-size: 2.6rem;
+    font-size: 3rem;
     font-weight: 300;
     display: flex;
     flex-direction: column;
@@ -450,7 +450,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     color: var(--black);
     display: flex;
     flex-direction: column;
@@ -463,8 +463,8 @@ img {
 }
 
 .poster-overlay p {
-    font-size: 1.7rem;
-    line-height: 1.4;
+    font-size: 1.35rem;
+    line-height: 1.5;
     max-width: 900px;
     color: var(--dark-grey);
     margin: auto;
@@ -511,7 +511,7 @@ img {
 
 .text-bold { font-weight: 700; font-size: 1.2rem; }
 .text-bold2 { font-weight: 700; font-size: 1.2rem; color: #272a23; }
-.text-bold3 { font-weight: 700; font-size: 1.7rem; color: #272a23; }
+.text-bold3 { font-weight: 700; font-size: 1.4rem; color: #272a23; }
 
 #back-to-top {
     position: fixed;
@@ -550,7 +550,7 @@ img {
 .reveal-on-scroll {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .reveal-on-scroll.visible {
@@ -587,9 +587,10 @@ img {
     .redesign-logo p { font-size: 1.4rem;}
     .section-desc { font-size: 1.4rem; }
     
+    .label { font-size: 2rem;}
     
     .detail-group h3 { font-size: 1.8rem; }
-    .text-bold { font-weight: 800; font-size: 1.5rem; }
+    .text-bold { font-weight: 800; font-size: 1.4rem; }
     
     .contents-list { font-size: 2.6rem; }
     .signature-row { grid-template-columns: repeat(2, 1fr); }

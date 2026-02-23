@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Intersection Observer for Scroll Animations
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.1
+        rootMargin: '0px 0px -50px 0px',
+        threshold: 0
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -34,9 +34,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Observe all sections and specific elements
     const revealElements = document.querySelectorAll('.section, .logo-item, .banner-item, .page-item, .detail-group');
+    const initialWindowHeight = window.innerHeight;
+    
     revealElements.forEach(el => {
-        el.classList.add('reveal-on-scroll');
-        observer.observe(el);
+        const rect = el.getBoundingClientRect();
+        // If element is already in viewport on load, show it immediately 
+        // to prevent flickering and IntersectionObserver bugs on refresh.
+        if (rect.top < initialWindowHeight + 50 && rect.bottom > -50) {
+            el.classList.add('reveal-on-scroll', 'visible');
+        } else {
+            el.classList.add('reveal-on-scroll');
+            observer.observe(el);
+        }
+    });
+
+    // Fallback: Check visibility again after all images finish loading, 
+    // in case elements' positions shifted drastically.
+    window.addEventListener('load', () => {
+        revealElements.forEach(el => {
+            if (!el.classList.contains('visible')) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight + 50 && rect.bottom > -50) {
+                    el.classList.add('visible');
+                    observer.unobserve(el);
+                }
+            }
+        });
     });
 
     // Custom interactions or paranoid checks can go here
