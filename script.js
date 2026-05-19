@@ -1,7 +1,47 @@
-// Wait for DOM to load
 document.addEventListener('DOMContentLoaded', () => {
+    // Scroll Animation Observer
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    const targetElements = document.querySelectorAll('.observe-me:not(.mobile-scroll)');
+    targetElements.forEach(el => {
+        observer.observe(el);
+    });
+
+    // Special Observer for very long mobile scroll images
+    const mobileScrollObserverOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.05 // Trigger much earlier
+    };
     
-    // Smooth scrolling for navigation links
+    const mobileScrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, mobileScrollObserverOptions);
+
+    const mobileScrollElements = document.querySelectorAll('.mobile-scroll');
+    mobileScrollElements.forEach(el => {
+        mobileScrollObserver.observe(el);
+    });
+
+    // Smooth Scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -10,121 +50,122 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (targetElement) {
                 targetElement.scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }
         });
     });
 
-    // Intersection Observer for Scroll Animations
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -50px 0px',
-        threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Only animate once
-            }
-        });
-    }, observerOptions);
-
-    // Observe all sections and specific elements
-    const revealElements = document.querySelectorAll('.section, .logo-item, .banner-item, .page-item, .detail-group');
-    const initialWindowHeight = window.innerHeight;
+    // Top Button & Navbar Visibility
+    const topBtn = document.getElementById('topBtn');
+    const navbar = document.querySelector('.navbar');
+    const heroSection = document.querySelector('.hero');
     
-    revealElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        // If element is already in viewport on load, show it immediately 
-        // to prevent flickering and IntersectionObserver bugs on refresh.
-        if (rect.top < initialWindowHeight + 50 && rect.bottom > -50) {
-            el.classList.add('reveal-on-scroll', 'visible');
-        } else {
-            el.classList.add('reveal-on-scroll');
-            observer.observe(el);
+    window.addEventListener('scroll', () => {
+        // Top Button logic
+        if (topBtn) {
+            if (window.scrollY > 500) {
+                topBtn.classList.add('visible');
+            } else {
+                topBtn.classList.remove('visible');
+            }
+        }
+
+        // Navbar logic
+        if (navbar && heroSection) {
+            const heroHeight = heroSection.offsetHeight;
+            if (window.scrollY > heroHeight * 0.8) {
+                navbar.classList.add('visible');
+            } else {
+                navbar.classList.remove('visible');
+            }
         }
     });
 
-    // Fallback: Check visibility again after all images finish loading, 
-    // in case elements' positions shifted drastically.
-    window.addEventListener('load', () => {
-        revealElements.forEach(el => {
-            if (!el.classList.contains('visible')) {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight + 50 && rect.bottom > -50) {
-                    el.classList.add('visible');
-                    observer.unobserve(el);
-                }
+    if (topBtn) {
+        topBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Poster Slider
+    const posterTrack = document.getElementById('posterTrack');
+    const prevPosterBtn = document.getElementById('prevPosterBtn');
+    const nextPosterBtn = document.getElementById('nextPosterBtn');
+    
+    if (posterTrack && prevPosterBtn && nextPosterBtn) {
+        let currentPosterIndex = 0;
+        let isTransitioning = false;
+        
+        // Clone items for true infinite loop
+        const originalItems = Array.from(posterTrack.children);
+        const realTotalItems = originalItems.length;
+        
+        originalItems.forEach(item => {
+            const clone = item.cloneNode(true);
+            posterTrack.appendChild(clone);
+        });
+        
+        function updatePosterSlider(transition = true) {
+            if (transition) {
+                posterTrack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+            } else {
+                posterTrack.style.transition = 'none';
+            }
+            
+            const gap = 32;
+            const itemWidth = posterTrack.children[0].offsetWidth;
+            const moveAmount = currentPosterIndex * (itemWidth + gap);
+            
+            posterTrack.style.transform = `translateX(-${moveAmount}px)`;
+        }
+
+        prevPosterBtn.addEventListener('click', () => {
+            if (isTransitioning) return;
+            const itemsPerView = window.innerWidth <= 1024 ? 1 : 3;
+            
+            if (currentPosterIndex < itemsPerView) {
+                currentPosterIndex += realTotalItems;
+                updatePosterSlider(false);
+                posterTrack.offsetHeight; // Force reflow
+            }
+            
+            isTransitioning = true;
+            currentPosterIndex -= itemsPerView;
+            updatePosterSlider(true);
+        });
+
+        nextPosterBtn.addEventListener('click', () => {
+            if (isTransitioning) return;
+            const itemsPerView = window.innerWidth <= 1024 ? 1 : 3;
+            
+            isTransitioning = true;
+            currentPosterIndex += itemsPerView;
+            updatePosterSlider(true);
+        });
+
+        posterTrack.addEventListener('transitionend', () => {
+            isTransitioning = false;
+            
+            if (currentPosterIndex >= realTotalItems) {
+                currentPosterIndex -= realTotalItems;
+                updatePosterSlider(false);
             }
         });
-    });
 
-    // Custom interactions or paranoid checks can go here
-    console.log("Portfolio loaded and interactions ready.");
-
-    // Back to Top Button
-    const backToTopButton = document.getElementById('back-to-top');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTopButton.classList.add('show-back-to-top');
-        } else {
-            backToTopButton.classList.remove('show-back-to-top');
-        }
-    });
-
-    backToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
-    // Scatter Text Interaction
-    const mainTitle = document.querySelector('.main-title');
-    if (mainTitle) {
-        const text = mainTitle.innerText;
-        mainTitle.innerHTML = text.split('').map(char => `<span>${char}</span>`).join('');
-        
-        const letters = mainTitle.querySelectorAll('span');
-        
-        document.addEventListener('mousemove', (e) => {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            
-            letters.forEach(letter => {
-                const rect = letter.getBoundingClientRect();
-                const letterCenterX = rect.left + rect.width / 2;
-                const letterCenterY = rect.top + rect.height / 2;
-                
-                const distanceX = mouseX - letterCenterX;
-                const distanceY = mouseY - letterCenterY;
-                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                
-                // Interaction radius
-                const radius = 300;
-                
-                if (distance < radius) {
-                    const force = (radius - distance) / radius;
-                    const moveX = (distanceX / distance) * force * -100; // Repel force
-                    const moveY = (distanceY / distance) * force * -100;
-                    const randomRotate = (Math.random() - 0.5) * 40 * force;
-                    
-                    letter.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${randomRotate}deg)`;
-                } else {
-                    letter.style.transform = 'translate(0, 0) rotate(0deg)';
-                }
-            });
+        window.addEventListener('resize', () => {
+            isTransitioning = false;
+            if (currentPosterIndex >= realTotalItems) {
+                currentPosterIndex -= realTotalItems;
+            }
+            updatePosterSlider(false);
         });
         
-        // Reset on mouse leave
-        document.addEventListener('mouseleave', () => {
-             letters.forEach(letter => {
-                letter.style.transform = 'translate(0, 0) rotate(0deg)';
-            });
-        });
+        // Setup initial dimensions after a tiny delay for images/layout to render
+        setTimeout(() => updatePosterSlider(false), 100);
     }
 });
